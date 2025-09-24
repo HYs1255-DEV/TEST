@@ -14,7 +14,11 @@ const COLORS = {
 export class Renderer {
   constructor(canvas, level) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
+    const context = canvas.getContext('2d');
+    if (!context) {
+      throw new Error('Impossible de récupérer le contexte 2D du canvas.');
+    }
+    this.ctx = context;
     this.level = level;
     this.backgroundLayers = [
       { color: '#11192c', height: canvas.height, speed: 0.1 },

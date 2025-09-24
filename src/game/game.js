@@ -111,7 +111,7 @@ export class Game {
 
     if (this.statusDuration > 0) {
       this.statusDuration -= dt;
-      if (this.statusDuration <= 0) {
+      if (this.statusDuration <= 0 && this.statusElement) {
         this.statusElement.textContent = '';
       }
     }
@@ -175,7 +175,9 @@ export class Game {
   }
 
   showStatus(message, duration) {
-    this.statusElement.textContent = message;
+    if (this.statusElement) {
+      this.statusElement.textContent = message;
+    }
     this.statusDuration = duration;
   }
 

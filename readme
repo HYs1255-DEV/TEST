@@ -1,6 +1,9 @@
 # Neon Dash
 
-Jeu 2D inspiré de Geometry Dash réalisé en JavaScript natif. Ouvre `index.html` dans un navigateur moderne pour jouer.
+Jeu 2D inspiré de Geometry Dash réalisé en JavaScript natif.
+
+> ℹ️ **Lance le jeu via un petit serveur local** (ex : `npx serve`, `python -m http.server`).
+> Les modules ES importés peuvent être bloqués lorsque la page est ouverte directement avec `file://`.
 
 ## Contrôles
 - **Espace / Flèche Haut / Clic** : sauter.
