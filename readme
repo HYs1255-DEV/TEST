@@ -1,1 +1,27 @@
+# Neon Dash
 
+Jeu 2D inspiré de Geometry Dash réalisé en JavaScript natif. Ouvre `index.html` dans un navigateur moderne pour jouer.
+
+## Contrôles
+- **Espace / Flèche Haut / Clic** : sauter.
+
+## Caractéristiques
+- Moteur maison 120 fps avec `requestAnimationFrame`.
+- Niveau généré procéduralement (~4 minutes) comprenant piques, blocs, plateformes mouvantes et zones d'accélération.
+- Rebond immédiat au début en cas de collision.
+- Rendu Canvas minimaliste avec parallaxe et traînée du cube.
+- Gestion audio préparée pour ajouter facilement une musique (`game.loadMusic('chemin/vers/musique.mp3')`).
+
+## Structure
+```
+index.html          Point d'entrée web
+styles.css          Habillage minimaliste
+src/
+  core/             Boucle de jeu et entrées
+  entities/         Joueur et physique
+  level/            Génération et obstacles
+  render/           Dessin Canvas
+  audio/            Gestionnaire audio optionnel
+  game/             Coordination gameplay
+  main.js           Initialisation
+```
