@@ -3,125 +3,307 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Berserk Haven</title>
+  <title>Berserk Infinite – Lecteur de manga ultime</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
 </head>
 <body>
   <header class="hero">
     <nav class="nav">
-      <div class="logo">Berserk Haven</div>
+      <div class="logo">Berserk Infinite</div>
       <ul class="nav-links">
-        <li><a href="#univers">Univers</a></li>
-        <li><a href="#personnages">Personnages</a></li>
-        <li><a href="#chronologie">Chronologie</a></li>
-        <li><a href="#communautes">Communautés</a></li>
+        <li><a href="#visionneuse">Visionneuse</a></li>
+        <li><a href="#bibliotheque">Bibliothèque</a></li>
+        <li><a href="#experience">Options</a></li>
+        <li><a href="#faq">FAQ</a></li>
       </ul>
+      <a class="nav-cta" href="#telechargement">Télécharger</a>
     </nav>
+
     <div class="hero-content">
-      <h1>Plongez dans les ténèbres de Berserk</h1>
-      <p>Le refuge des fans de Kentaro Miura : actualités, guides de lecture et hommages.</p>
-      <a class="cta" href="#guide">Commencer le voyage</a>
+      <span class="badge">Lecteur complet inspiré de la saga Berserk</span>
+      <h1>Le lecteur de manga qui respecte la lecture japonaise et va encore plus loin.</h1>
+      <p>
+        Berserk Infinite combine une bibliothèque intelligente, une visionneuse ultra-flexible, des réglages de confort et des
+        outils communautaires pour vivre la légende de Guts comme si vous teniez un tome dans vos mains.
+      </p>
+      <div class="hero-actions">
+        <a class="cta primary" href="#visionneuse">Explorer la visionneuse</a>
+        <a class="cta ghost" href="#telechargement">Installer l'appli</a>
+      </div>
+      <ul class="hero-metrics">
+        <li><strong>4</strong> modes de lecture</li>
+        <li><strong>12</strong> réglages d'affichage avancés</li>
+        <li><strong>∞</strong> chapitres organisés automatiquement</li>
+      </ul>
     </div>
   </header>
 
   <main>
-    <section id="univers" class="panel">
-      <h2>Un univers sombre et fascinant</h2>
-      <p>
-        Berserk est une épopée dark fantasy mêlant tragédie, horreur et questionnements
-        existentiels. Découvrez les Royaumes du Midland, les démons de la Main de Dieu et
-        les mystères de la Marque du Sacrifice.
-      </p>
-      <div class="features">
+    <section id="visionneuse" class="panel visionneuse">
+      <div class="panel-header">
+        <h2>Visionneuse cinématique</h2>
+        <p>
+          Une interface pensée pour reproduire la tension des planches de Berserk tout en ajoutant des outils modernes : direction
+          de lecture japonaise, vue page ou rouleau, annotations et synchronisation cloud.
+        </p>
+      </div>
+
+      <div class="reader-showcase">
+        <div class="reader-frame">
+          <div class="reader-toolbar">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="chapter">Arc du Faucon Millénaire · Chapitre 307</span>
+            <div class="toolbar-actions">
+              <span class="icon">☀️</span>
+              <span class="icon">🔁</span>
+              <span class="icon">🔖</span>
+              <span class="icon">⚙️</span>
+            </div>
+          </div>
+          <div class="page-strip">
+            <div class="page page-left">
+              <span class="page-number">198</span>
+              <div class="page-art">Planche pleine page</div>
+            </div>
+            <div class="page page-right">
+              <span class="page-number">199</span>
+              <div class="page-art alt">Double page dynamique</div>
+            </div>
+          </div>
+          <div class="reader-controls">
+            <div class="control">
+              <span class="label">Zoom</span>
+              <div class="slider">
+                <span class="fill"></span>
+              </div>
+            </div>
+            <div class="control">
+              <span class="label">Sens de lecture</span>
+              <div class="toggle">
+                <span class="toggle-knob">⬅︎</span>
+                <span class="toggle-label">Droite ➜ Gauche</span>
+              </div>
+            </div>
+            <div class="control">
+              <span class="label">Mode</span>
+              <div class="pills">
+                <span class="pill active">Double page</span>
+                <span class="pill">Rouleau</span>
+                <span class="pill">Panel Focus</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ul class="reader-details">
+          <li>
+            <h3>Lecture inversée native</h3>
+            <p>Navigation fluide droite ➜ gauche avec inversion du défilement, raccourcis clavier et commandes tactiles.</p>
+          </li>
+          <li>
+            <h3>Panel Focus</h3>
+            <p>Zoomez automatiquement sur chaque case pour ressentir l'impact des planches de Miura image après image.</p>
+          </li>
+          <li>
+            <h3>Annotations synchronisées</h3>
+            <p>Ajoutez des marque-pages, des commentaires ou des croquis overlay et retrouvez-les sur tous vos appareils.</p>
+          </li>
+          <li>
+            <h3>Modes nuit & papier crème</h3>
+            <p>Deux thèmes respectant le contraste original ou adoucissant la lumière pour vos sessions nocturnes.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="bibliotheque" class="panel alt">
+      <div class="panel-header">
+        <h2>Bibliothèque vivante</h2>
+        <p>
+          Importez vos tomes physiques scannés, vos chapitres officiels ou vos fan-traductions et laissez Berserk Infinite classer,
+          taguer et synchroniser chaque chapitre.
+        </p>
+      </div>
+      <div class="library-grid">
         <article>
-          <h3>Ambiance</h3>
-          <p>Une atmosphère gothique où la lumière perce difficilement les ténèbres.</p>
+          <h3>Import multi-sources</h3>
+          <p>Drag & drop, serveur NAS, cloud, scraping légal des plateformes partenaires : tout converge dans une interface.</p>
         </article>
         <article>
-          <h3>Thèmes</h3>
-          <p>Libre arbitre, destin, camaraderie et le poids du passé.</p>
+          <h3>Reconnaissance automatique</h3>
+          <p>Analyse OCR du titre, numéro de chapitre, arc narratif et ordre chronologique, même pour les éditions limitées.</p>
         </article>
         <article>
-          <h3>Œuvre</h3>
-          <p>Un manga culte publié depuis 1989, prolongé par le Studio Gaga en hommage à Miura.</p>
+          <h3>Collections thématiques</h3>
+          <p>Créez des playlists : « Guts vs Apôtres », « Flashbacks de Griffith », « Armure du Berserker ».</p>
+        </article>
+        <article>
+          <h3>Progression partagée</h3>
+          <p>Synchronisation familiale, recommandations et clubs de lecture privés avec discussion intégrée.</p>
         </article>
       </div>
     </section>
 
-    <section id="personnages" class="panel alt">
-      <h2>Héros et antagonistes emblématiques</h2>
-      <div class="grid">
-        <article>
-          <h3>Guts</h3>
-          <p>Le guerrier noir, maniant la Dragonslayer pour lutter contre son destin.</p>
-        </article>
-        <article>
-          <h3>Griffith</h3>
-          <p>Chef charismatique de la Bande du Faucon, prêt à tout pour atteindre son rêve.</p>
-        </article>
-        <article>
-          <h3>Casca</h3>
-          <p>Capitaine intrépide et cœur battant de la troupe, symbole de résilience.</p>
-        </article>
-        <article>
-          <h3>Skull Knight</h3>
-          <p>Un allié énigmatique guidant Guts dans les arcanes du monde astral.</p>
-        </article>
+    <section id="experience" class="panel">
+      <div class="panel-header">
+        <h2>Des options taillées pour les puristes</h2>
+        <p>Chaque réglage est conçu pour respecter la narration originale tout en donnant le contrôle total au lecteur.</p>
+      </div>
+      <div class="options-grid">
+        <div class="option">
+          <span class="option-title">Contrôle du grain</span>
+          <p>Réglez l'intensité des trames, nettoyez le bruit des scans ou restaurez le contraste initial des pages papier.</p>
+        </div>
+        <div class="option">
+          <span class="option-title">Interpolation intelligente</span>
+          <p>Recréez la fluidité entre les planches lors du défilement en rouleau, sans dénaturer le trait de Miura.</p>
+        </div>
+        <div class="option">
+          <span class="option-title">Audio Atmos</span>
+          <p>Déclenchez des ambiances sonores dynamiques (bourrasques, battements de cœur, steel clashes) synchronisées.</p>
+        </div>
+        <div class="option">
+          <span class="option-title">Mode exhibition</span>
+          <p>Affichez plusieurs planches en mosaïque pour décortiquer la composition lors de masterclass ou de streams.</p>
+        </div>
+      </div>
+      <div class="options-footer">
+        <div>
+          <h3>Raccourcis universels</h3>
+          <p>Personnalisez chaque raccourci clavier/manette et exportez-les pour vos sessions Twitch.</p>
+        </div>
+        <div>
+          <h3>Compatibilité totale</h3>
+          <p>Fonctionne offline, en mode tactile sur tablette, et se connecte aux e-readers via WebUSB.</p>
+        </div>
       </div>
     </section>
 
-    <section id="chronologie" class="panel">
-      <h2>Ligne du temps</h2>
-      <ol class="timeline">
-        <li>
-          <span class="date">Âge d'Or</span>
-          <p>Ascension de la Bande du Faucon et trahison lors de l'Éclipse.</p>
-        </li>
-        <li>
-          <span class="date">Chasseur de démons</span>
-          <p>Errance de Guts en quête de vengeance face aux Apôtres.</p>
-        </li>
-        <li>
-          <span class="date">Faucon Millénaire</span>
-          <p>Retour de Griffith et bouleversement du monde physique et astral.</p>
-        </li>
-      </ol>
-      <p class="note">⚠️ Chronologie sans spoilers majeurs pour les nouveaux lecteurs.</p>
+    <section class="panel alt community">
+      <div class="panel-header">
+        <h2>Communauté et co-création</h2>
+        <p>Transformez la lecture en événement : organisez des read-alongs, partagez vos annotations, élaborez des théories.</p>
+      </div>
+      <div class="community-columns">
+        <div>
+          <h3>Salon Eclipse</h3>
+          <p>Discussion vocale et texte synchronisée avec la page en cours. Parfait pour revivre l'Éclipse ensemble.</p>
+        </div>
+        <div>
+          <h3>Atelier Fanart</h3>
+          <p>Importez vos croquis, superposez-les sur les planches et créez des variantes alternatives.</p>
+        </div>
+        <div>
+          <h3>Mode Speedrun</h3>
+          <p>Chronomètre intégré, stats de lecture, défis hebdomadaires : qui finira l'arc Conviction le plus vite ?</p>
+        </div>
+      </div>
     </section>
 
-    <section id="guide" class="panel alt">
-      <h2>Guide de lecture & visionnage</h2>
-      <ul class="guide-list">
-        <li><strong>Manga :</strong> 41 tomes disponibles en français chez Glénat.</li>
-        <li><strong>Animes :</strong> Série 1997, films de l'Âge d'Or et adaptation 2016.</li>
-        <li><strong>Conseil :</strong> privilégiez le manga pour l'expérience complète.</li>
-      </ul>
+    <section id="telechargement" class="panel download">
+      <div class="panel-header">
+        <h2>Téléchargement & compatibilité</h2>
+        <p>Disponible sur desktop, tablette et navigateur. Synchronisation via votre compte gratuit Berserk Network.</p>
+      </div>
+      <div class="download-grid">
+        <div class="download-card">
+          <h3>Application Desktop</h3>
+          <ul>
+            <li>Windows, macOS, Linux (AppImage)</li>
+            <li>Modules IA pour nettoyage de planches</li>
+            <li>Support manette & télécommandes</li>
+          </ul>
+          <a class="cta primary small" href="#">Télécharger (2.3&nbsp;Go)</a>
+        </div>
+        <div class="download-card">
+          <h3>Progressive Web App</h3>
+          <ul>
+            <li>Installation instantanée via le navigateur</li>
+            <li>Mode offline avec cache des chapitres favoris</li>
+            <li>Synchronisation automatique des paramètres</li>
+          </ul>
+          <a class="cta ghost small" href="#">Installer la PWA</a>
+        </div>
+        <div class="download-card">
+          <h3>API & Extensions</h3>
+          <ul>
+            <li>Webhook pour publier vos notes</li>
+            <li>SDK streaming pour overlays live</li>
+            <li>Plugins de traduction communautaires</li>
+          </ul>
+          <a class="cta ghost small" href="#">Consulter la documentation</a>
+        </div>
+      </div>
     </section>
 
-    <section id="communautes" class="panel">
-      <h2>Communautés & ressources</h2>
-      <div class="grid">
-        <article>
-          <h3>Forums & Discussions</h3>
-          <p>Rejoignez les débats passionnés sur r/Berserk et les forums francophones.</p>
-        </article>
-        <article>
-          <h3>Fanarts & Cosplay</h3>
-          <p>Découvrez des créations inspirées du manga lors d'événements comme la Japan Expo.</p>
-        </article>
-        <article>
-          <h3>Analyses</h3>
-          <p>Lectures approfondies, podcasts et chaînes YouTube dédiées à la série.</p>
-        </article>
+    <section id="faq" class="panel faq">
+      <div class="panel-header">
+        <h2>FAQ</h2>
+        <p>Toutes les réponses pour lancer votre lecteur manga ultime.</p>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h3>Comment importer mes tomes Berserk scannés ?</h3>
+          <p>
+            Faites glisser vos dossiers ou fichiers ZIP/CBZ dans la bibliothèque. Les chapitres sont identifiés, les métadonnées
+            récupérées et la lecture se lance automatiquement au dernier point connu.
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3>Puis-je conserver le sens de lecture japonais ?</h3>
+          <p>
+            Oui. Le sens droite ➜ gauche est activé par défaut, y compris pour le défilement, les flèches du clavier et l'UX
+            tactile. Vous pouvez passer en lecture occidentale à la volée.
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3>Y a-t-il un mode sans distraction ?</h3>
+          <p>
+            Activez le mode Berserker : interface minimaliste, commandes gestuelles et bande-son adaptative pour une immersion
+            totale.
+          </p>
+        </div>
+        <div class="faq-item">
+          <h3>Mes données sont-elles synchronisées ?</h3>
+          <p>
+            Oui, via Berserk Network : lecture offline avec resync automatique, chiffrement de vos notes et export JSON/CBZ.</p>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <p>Hommage à Kentaro Miura (1966-2021). Ce site non officiel célèbre son héritage.</p>
+    <div class="footer-grid">
+      <div>
+        <h4>Berserk Infinite</h4>
+        <p>Projet hommage aux fans, pensé pour magnifier la lecture du chef-d'œuvre de Kentaro Miura.</p>
+      </div>
+      <div>
+        <h4>Raccourcis</h4>
+        <ul>
+          <li><a href="#visionneuse">Visionneuse</a></li>
+          <li><a href="#bibliotheque">Bibliothèque</a></li>
+          <li><a href="#telechargement">Téléchargements</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Communauté</h4>
+        <ul>
+          <li><a href="#">Serveur Eclipse</a></li>
+          <li><a href="#">Atelier Fanart</a></li>
+          <li><a href="#">Patch notes</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-note">Berserk© Kentaro Miura / Hakusensha. Ce projet fan-made respecte les ayants droit et ne distribue aucun contenu.</p>
   </footer>
 </body>
 </html>

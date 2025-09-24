@@ -1,14 +1,15 @@
-# Berserk Haven
+# Berserk Infinite
 
-Un mini-site statique pour les fans de *Berserk*, proposant un aperçu de l'univers, des personnages clés, d'une chronologie et de ressources communautaires.
+Une landing page dédiée à un lecteur de manga ultra-complet inspiré de l'univers de *Berserk*. Le site présente les
+fonctionnalités clés du lecteur (visionneuse cinématique, bibliothèque intelligente, réglages avancés, communauté, etc.).
 
 ## Contenu du dépôt
 
-- `index.html` – la page principale à ouvrir dans le navigateur.
-- `styles.css` – la feuille de style sombre utilisée par la page.
+- `index.html` – la page principale décrivant l'expérience Berserk Infinite.
+- `styles.css` – la feuille de style gothique/cinématique associée à la page.
 - `README.md` – ce fichier d'instructions.
 
-Si vous obtenez uniquement ce fichier lors du téléchargement, vérifiez que vous avez bien cloné le dépôt ou extrait l'archive complète (voir ci-dessous).
+Si vous n'obtenez que ce fichier, vérifiez que vous avez bien cloné le dépôt ou extrait l'archive complète.
 
 ## Récupérer les fichiers
 
@@ -16,14 +17,14 @@ Si vous obtenez uniquement ce fichier lors du téléchargement, vérifiez que vo
 ```bash
 git clone <URL_DU_DEPOT>
 ```
-La commande créera un dossier contenant les fichiers listés ci-dessus.
+Cette commande créera un dossier contenant tous les fichiers listés ci-dessus.
 
 ### Option 2 : Télécharger l'archive ZIP
 1. Ouvrez la page du dépôt en ligne.
 2. Cliquez sur le bouton vert **Code** puis **Download ZIP**.
 3. Une fois l'archive téléchargée, extrayez-la ; vous obtiendrez `index.html` et `styles.css` en plus de ce README.
 
-## Lancer le site en local
+## Ouvrir la page en local
 
 1. Ouvrez le dossier du projet.
 2. Double-cliquez sur `index.html` ou utilisez un serveur local :
@@ -32,4 +33,4 @@ La commande créera un dossier contenant les fichiers listés ci-dessus.
    ```
 3. Ouvrez ensuite [http://localhost:8000/](http://localhost:8000/) dans votre navigateur.
 
-Bon voyage dans l'univers de Guts et Griffith !
+Vous y découvrirez le lecteur Berserk Infinite et toutes ses options « de malade ». Bonne lecture !
