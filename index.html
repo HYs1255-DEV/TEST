@@ -3,15 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Geometry Dash Inspired</title>
+    <title>Neon Dash 3D</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="layout">
-      <canvas id="gameCanvas" width="960" height="540" aria-label="Jeu de plateforme 2D"></canvas>
+      <div
+        id="gameContainer"
+        class="game-container"
+        aria-label="Jeu de course 3D inspiré de Geometry Dash"
+        role="application"
+      ></div>
       <section class="hud">
-        <h1>Neon Dash</h1>
-        <p>Appuie sur <strong>Espace</strong> ou clique pour sauter. Survis jusqu'à la fin du niveau&nbsp;!</p>
+        <h1>Neon Dash 3D</h1>
+        <p>Appuie sur <strong>Espace</strong> ou clique pour sauter. Évite les obstacles futuristes !</p>
         <p class="status" id="status"></p>
       </section>
     </main>

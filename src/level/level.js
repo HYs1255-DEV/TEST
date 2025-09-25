@@ -1,211 +1,330 @@
-import { MovingPlatform, Obstacle, ObstacleType } from './obstacles.js';
-import { Random } from './random.js';
+import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
 
-const GROUND_MARGIN = 80;
+const SEGMENT_LENGTH = 36;
+const SEGMENT_COUNT = 8;
+const CORRIDOR_WIDTH = 10;
+const SPAWN_DISTANCE = 320;
 
-/**
- * Creates a long scrolling level with multiple obstacle patterns.
- */
 export class Level {
-  constructor({ canvasWidth, canvasHeight, seed }) {
-    this.canvasWidth = canvasWidth;
-    this.canvasHeight = canvasHeight;
-    this.groundY = canvasHeight - GROUND_MARGIN;
-    this.random = new Random(seed);
-
+  constructor(scene) {
+    this.scene = scene;
     this.obstacles = [];
-    this.pits = [];
     this.speedZones = [];
+    this.floorSegments = [];
+    this.spawnCursor = 30;
+    this.starField = null;
 
-    this.length = 76000; // approx 4 minutes at base speed.
-    this.baseSpeed = 320;
-    this.elapsed = 0;
+    this.floorMaterial = new THREE.MeshStandardMaterial({
+      color: 0x0a1024,
+      emissive: 0x050a1c,
+      emissiveIntensity: 0.35,
+      metalness: 0.45,
+      roughness: 0.55,
+    });
+    this.wallMaterial = new THREE.MeshStandardMaterial({
+      color: 0x070c1c,
+      emissive: 0x081a3a,
+      emissiveIntensity: 0.4,
+      metalness: 0.25,
+      roughness: 0.7,
+    });
+    this.neonMaterial = new THREE.MeshStandardMaterial({
+      color: 0x4c7dff,
+      emissive: 0x4c7dff,
+      emissiveIntensity: 1.8,
+      metalness: 0.1,
+      roughness: 0.2,
+    });
 
-    this.generate();
+    this.buildEnvironment();
   }
 
-  generate() {
-    this.obstacles.length = 0;
-    this.pits.length = 0;
-    this.speedZones.length = 0;
+  buildEnvironment() {
+    this.scene.fog = new THREE.Fog(0x040712, 14, 180);
 
-    let cursor = 400;
-    let nextSpeedZone = 4000 + this.random.range(2000, 4000);
-
-    while (cursor < this.length) {
-      if (cursor > nextSpeedZone) {
-        const duration = this.random.range(1200, 2400);
-        const multiplier = this.random.range(1.35, 1.7);
-        this.speedZones.push({ start: cursor, end: cursor + duration, multiplier });
-        cursor += 400;
-        nextSpeedZone += this.random.range(8000, 12000);
-        continue;
-      }
-
-      const pattern = this.random.pick(['spike', 'blockSteps', 'pit', 'movingPlatform', 'mixed']);
-      switch (pattern) {
-        case 'spike':
-          cursor = this.addSpikeCluster(cursor);
-          break;
-        case 'blockSteps':
-          cursor = this.addBlockSteps(cursor);
-          break;
-        case 'pit':
-          cursor = this.addPitSequence(cursor);
-          break;
-        case 'movingPlatform':
-          cursor = this.addMovingPlatformRun(cursor);
-          break;
-        case 'mixed':
-        default:
-          cursor = this.addMixedPattern(cursor);
-          break;
-      }
-      cursor += this.random.range(160, 340);
+    for (let i = 0; i < SEGMENT_COUNT; i++) {
+      const group = this.createCorridorSegment();
+      group.position.z = (i - 2) * SEGMENT_LENGTH;
+      this.scene.add(group);
+      this.floorSegments.push(group);
     }
+
+    const skyGeometry = new THREE.SphereGeometry(120, 32, 32);
+    const skyMaterial = new THREE.MeshBasicMaterial({
+      color: 0x050916,
+      side: THREE.BackSide,
+    });
+    const sky = new THREE.Mesh(skyGeometry, skyMaterial);
+    sky.position.y = 0;
+    this.scene.add(sky);
+
+    this.starField = this.createStarField();
+    this.scene.add(this.starField);
+
+    const lightRailGeometry = new THREE.BoxGeometry(0.5, 0.25, SEGMENT_COUNT * SEGMENT_LENGTH);
+    const lightRail = new THREE.Mesh(lightRailGeometry, this.neonMaterial.clone());
+    lightRail.position.set(0, 3.4, (SEGMENT_COUNT * SEGMENT_LENGTH) / 2 - SEGMENT_LENGTH * 2);
+    lightRail.castShadow = false;
+    lightRail.receiveShadow = false;
+    this.scene.add(lightRail);
   }
 
-  addSpikeCluster(cursor) {
-    const clusterLength = this.random.range(3, 7);
-    const spikeWidth = 60;
-    for (let i = 0; i < clusterLength; i++) {
-      const height = this.random.range(80, 120);
-      this.obstacles.push(
-        new Obstacle(ObstacleType.SPIKE, cursor + i * spikeWidth, spikeWidth, height, {
-          y: this.groundY - height,
-          color: '#ff4f6d',
-        })
-      );
+  createStarField() {
+    const starCount = 600;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+      const radius = 40 + Math.random() * 40;
+      const angle = Math.random() * Math.PI * 2;
+      positions[i * 3] = Math.cos(angle) * radius;
+      positions[i * 3 + 1] = 8 + Math.random() * 16;
+      positions[i * 3 + 2] = Math.sin(angle) * radius;
     }
-    return cursor + clusterLength * spikeWidth;
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const material = new THREE.PointsMaterial({
+      color: 0x6c8cff,
+      size: 0.35,
+      transparent: true,
+      opacity: 0.8,
+      depthWrite: false,
+    });
+    const points = new THREE.Points(geometry, material);
+    points.rotation.x = Math.PI / 2;
+    return points;
   }
 
-  addBlockSteps(cursor) {
-    const steps = this.random.range(3, 6);
-    const blockWidth = 140;
-    let height = 80;
-    for (let i = 0; i < steps; i++) {
-      const blockHeight = height + this.random.range(-10, 50);
-      this.obstacles.push(
-        new Obstacle(ObstacleType.BLOCK, cursor + i * (blockWidth + 40), blockWidth, blockHeight, {
-          y: this.groundY - blockHeight,
-          color: '#7cf2ff',
-        })
-      );
-      height += this.random.range(-20, 40);
-    }
-    return cursor + steps * (blockWidth + 40);
-  }
+  createCorridorSegment() {
+    const group = new THREE.Group();
 
-  addPitSequence(cursor) {
-    const gaps = this.random.range(1, 3);
-    const gapWidth = this.random.range(180, 320);
-    for (let i = 0; i < gaps; i++) {
-      const pitStart = cursor + i * (gapWidth + 240);
-      this.pits.push({ start: pitStart, end: pitStart + gapWidth });
-      this.obstacles.push(
-        new Obstacle(ObstacleType.SPIKE, pitStart - 60, 60, 90, {
-          y: this.groundY - 90,
-          color: '#ffb347',
-        })
-      );
-      this.obstacles.push(
-        new Obstacle(ObstacleType.SPIKE, pitStart + gapWidth, 60, 90, {
-          y: this.groundY - 90,
-          color: '#ffb347',
-        })
-      );
-    }
-    return cursor + gaps * (gapWidth + 240);
-  }
+    const floorGeometry = new THREE.BoxGeometry(CORRIDOR_WIDTH, 0.6, SEGMENT_LENGTH);
+    const floor = new THREE.Mesh(floorGeometry, this.floorMaterial);
+    floor.position.y = -0.3;
+    floor.castShadow = false;
+    floor.receiveShadow = true;
+    group.add(floor);
 
-  addMovingPlatformRun(cursor) {
-    const platforms = this.random.range(2, 4);
-    const width = 160;
-    for (let i = 0; i < platforms; i++) {
-      const x = cursor + i * (width + 240);
-      const baseY = this.groundY - this.random.range(120, 220);
-      const amplitude = this.random.range(30, 70);
-      const angularSpeed = this.random.range(1.2, 2.2);
-      this.obstacles.push(new MovingPlatform(x, baseY, width, 22, amplitude, angularSpeed));
-    }
-    return cursor + platforms * (width + 240);
-  }
+    const wallGeometry = new THREE.BoxGeometry(0.7, 5.2, SEGMENT_LENGTH);
+    const neonGeometry = new THREE.BoxGeometry(0.15, 4.8, SEGMENT_LENGTH);
+    const leftWall = new THREE.Mesh(wallGeometry, this.wallMaterial);
+    leftWall.position.set(-CORRIDOR_WIDTH / 2 - 0.35, 2.0, 0);
+    leftWall.receiveShadow = true;
+    group.add(leftWall);
 
-  addMixedPattern(cursor) {
-    const chunkLength = this.random.range(800, 1200);
-    const subCursor = cursor;
-    let offset = 0;
-    while (offset < chunkLength) {
-      const choice = this.random.pick(['spike', 'block', 'pit']);
-      if (choice === 'spike') {
-        offset += this.random.range(120, 220);
-        const height = this.random.range(90, 130);
-        this.obstacles.push(
-          new Obstacle(ObstacleType.SPIKE, subCursor + offset, 60, height, {
-            y: this.groundY - height,
-            color: '#ff4f6d',
-          })
-        );
-      } else if (choice === 'block') {
-        const width = this.random.range(120, 200);
-        const height = this.random.range(60, 160);
-        this.obstacles.push(
-          new Obstacle(ObstacleType.BLOCK, subCursor + offset, width, height, {
-            y: this.groundY - height,
-            color: '#7cf2ff',
-          })
-        );
-        offset += width + 60;
-      } else {
-        const gapWidth = this.random.range(140, 220);
-        const pitStart = subCursor + offset;
-        this.pits.push({ start: pitStart, end: pitStart + gapWidth });
-        offset += gapWidth + 200;
-      }
-    }
-    return cursor + chunkLength;
+    const rightWall = leftWall.clone();
+    rightWall.position.x = CORRIDOR_WIDTH / 2 + 0.35;
+    group.add(rightWall);
+
+    const leftNeon = new THREE.Mesh(neonGeometry, this.neonMaterial);
+    leftNeon.position.set(-CORRIDOR_WIDTH / 2 - 0.2, 2.0, 0);
+    group.add(leftNeon);
+
+    const rightNeon = leftNeon.clone();
+    rightNeon.position.x = CORRIDOR_WIDTH / 2 + 0.2;
+    group.add(rightNeon);
+
+    return group;
   }
 
   reset() {
-    this.elapsed = 0;
     for (const obstacle of this.obstacles) {
-      if (obstacle instanceof MovingPlatform) {
-        obstacle.reset();
+      this.scene.remove(obstacle.mesh);
+    }
+    this.obstacles = [];
+    this.speedZones = [];
+    this.spawnCursor = 30;
+
+    for (let i = 0; i < this.floorSegments.length; i++) {
+      this.floorSegments[i].position.z = (i - 2) * SEGMENT_LENGTH;
+    }
+  }
+
+  update(dt, playerZ) {
+    this.animateEnvironment(dt, playerZ);
+    this.recycleFloor(playerZ);
+    this.cleanup(playerZ);
+    this.ensureSpawn(playerZ + SPAWN_DISTANCE);
+    this.updateObstacles(dt);
+  }
+
+  animateEnvironment(dt, playerZ) {
+    if (this.starField) {
+      this.starField.rotation.y += dt * 0.05;
+      this.starField.position.z = playerZ + 40;
+    }
+  }
+
+  recycleFloor(playerZ) {
+    const totalLength = SEGMENT_COUNT * SEGMENT_LENGTH;
+    for (const segment of this.floorSegments) {
+      if (segment.position.z + SEGMENT_LENGTH < playerZ - SEGMENT_LENGTH) {
+        segment.position.z += totalLength;
       }
     }
   }
 
-  update(dt) {
-    this.elapsed += dt;
-    for (const obstacle of this.obstacles) {
-      if (obstacle instanceof MovingPlatform) {
-        obstacle.update(dt);
+  cleanup(playerZ) {
+    this.obstacles = this.obstacles.filter((obstacle) => {
+      if (obstacle.mesh.position.z < playerZ - 20) {
+        this.scene.remove(obstacle.mesh);
+        return false;
       }
+      return true;
+    });
+    this.speedZones = this.speedZones.filter((zone) => zone.end > playerZ - 10);
+  }
+
+  ensureSpawn(targetZ) {
+    while (this.spawnCursor < targetZ) {
+      this.spawnChunk();
     }
   }
 
-  getScrollSpeed(worldX) {
-    let speed = this.baseSpeed;
+  spawnChunk() {
+    const chunkStart = this.spawnCursor + 8;
+    const chunkLength = 26 + Math.random() * 18;
+    const chunkEnd = chunkStart + chunkLength;
+    const patternCount = Math.max(3, Math.floor(chunkLength / 6));
+
+    for (let i = 0; i < patternCount; i++) {
+      const z = chunkStart + i * (chunkLength / patternCount) + THREE.MathUtils.randFloatSpread(1.5);
+      const selector = Math.random();
+      if (selector < 0.4) {
+        this.spawnSpike(z);
+      } else if (selector < 0.75) {
+        this.spawnBlock(z);
+      } else {
+        this.spawnMovingPlatform(z);
+      }
+    }
+
+    if (Math.random() < 0.35) {
+      this.speedZones.push({ start: chunkStart, end: chunkEnd, multiplier: 1.35 });
+    }
+
+    this.spawnCursor = chunkEnd + 12;
+  }
+
+  spawnSpike(z) {
+    const geometry = new THREE.ConeGeometry(0.6, 1.3, 4);
+    const material = new THREE.MeshStandardMaterial({
+      color: 0xff5b7c,
+      emissive: 0xff2d56,
+      emissiveIntensity: 0.9,
+      metalness: 0.3,
+      roughness: 0.4,
+    });
+    const spike = new THREE.Mesh(geometry, material);
+    spike.rotation.y = Math.PI / 4;
+    spike.position.set(0, 0.65, z);
+    spike.castShadow = true;
+    spike.receiveShadow = true;
+    this.addObstacle(spike, { type: 'spike' });
+  }
+
+  spawnBlock(z) {
+    const geometry = new THREE.BoxGeometry(1.6, 1.6, 1.8);
+    const material = new THREE.MeshStandardMaterial({
+      color: 0x7cf2ff,
+      emissive: 0x1e53ff,
+      emissiveIntensity: 0.6,
+      metalness: 0.25,
+      roughness: 0.35,
+    });
+    const block = new THREE.Mesh(geometry, material);
+    block.position.set(0, 0.8, z);
+    block.castShadow = true;
+    block.receiveShadow = true;
+    this.addObstacle(block, { type: 'block' });
+  }
+
+  spawnMovingPlatform(z) {
+    const geometry = new THREE.BoxGeometry(2.4, 0.4, 2.4);
+    const material = new THREE.MeshStandardMaterial({
+      color: 0xffe66d,
+      emissive: 0xffc53d,
+      emissiveIntensity: 1.2,
+      metalness: 0.15,
+      roughness: 0.25,
+    });
+    const platform = new THREE.Mesh(geometry, material);
+    platform.position.set(0, 1.5, z);
+    platform.castShadow = true;
+    platform.receiveShadow = true;
+    this.addObstacle(platform, {
+      type: 'movingPlatform',
+      behavior: {
+        kind: 'bob',
+        speed: 2.4 + Math.random() * 1.4,
+        amplitude: 0.6 + Math.random() * 0.5,
+        phase: Math.random() * Math.PI * 2,
+      },
+    });
+  }
+
+  addObstacle(mesh, options) {
+    const obstacle = {
+      mesh,
+      type: options.type,
+      behavior: options.behavior ?? null,
+      boundingBox: new THREE.Box3().setFromObject(mesh),
+      baseY: mesh.position.y,
+      phase: options.behavior?.phase ?? 0,
+    };
+    this.scene.add(mesh);
+    this.obstacles.push(obstacle);
+  }
+
+  updateObstacles(dt) {
+    for (const obstacle of this.obstacles) {
+      if (obstacle.behavior?.kind === 'bob') {
+        obstacle.phase += obstacle.behavior.speed * dt;
+        obstacle.mesh.position.y = obstacle.baseY + Math.sin(obstacle.phase) * obstacle.behavior.amplitude;
+      }
+      obstacle.boundingBox.setFromObject(obstacle.mesh);
+    }
+  }
+
+  handlePlayerCollision(player) {
+    let landedPlatform = null;
+    for (const obstacle of this.obstacles) {
+      if (!obstacle.boundingBox.intersectsBox(player.boundingBox)) {
+        continue;
+      }
+
+      if (obstacle.type === 'block' || obstacle.type === 'movingPlatform') {
+        const top = obstacle.boundingBox.max.y;
+        const prevBottom = player.prevBottom;
+        const bottom = player.boundingBox.min.y;
+        const descending = player.velocityY <= 0.0001;
+        const wasAbove = prevBottom >= top - 0.06;
+        const nowOnTop = bottom <= top + 0.12;
+
+        if (wasAbove && nowOnTop && descending) {
+          const platformRef = obstacle.type === 'movingPlatform' ? obstacle : null;
+          player.landOn(top, platformRef);
+          landedPlatform = platformRef;
+          continue;
+        }
+      }
+
+      return { dead: true };
+    }
+
+    if (!landedPlatform && player.attachedPlatform) {
+      player.attachedPlatform = null;
+      player.grounded = false;
+    }
+
+    return { dead: false };
+  }
+
+  getSpeedMultiplier(playerZ) {
+    let multiplier = 1 + Math.min(playerZ / 900, 0.6);
     for (const zone of this.speedZones) {
-      if (worldX >= zone.start && worldX <= zone.end) {
-        speed = this.baseSpeed * zone.multiplier;
-        break;
+      if (playerZ >= zone.start && playerZ <= zone.end) {
+        multiplier *= zone.multiplier;
       }
     }
-    return speed;
-  }
-
-  getActiveObstacles(cameraX, viewWidth) {
-    const margin = 600;
-    const start = cameraX - margin;
-    const end = cameraX + viewWidth + margin;
-    return this.obstacles.filter((obstacle) => obstacle.right >= start && obstacle.left <= end);
-  }
-
-  isOverPit(worldX, width) {
-    const left = worldX;
-    const right = worldX + width;
-    return this.pits.some((pit) => right > pit.start && left < pit.end);
+    return multiplier;
   }
 }

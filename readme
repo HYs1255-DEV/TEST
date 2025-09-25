@@ -1,30 +1,29 @@
-# Neon Dash
+# Neon Dash 3D
 
-Jeu 2D inspiré de Geometry Dash réalisé en JavaScript natif.
+Course 3D néon inspirée de Geometry Dash et réalisée avec Three.js.
 
 > ℹ️ **Lance le jeu via un petit serveur local** (ex : `npx serve`, `python -m http.server`).
-> Les modules ES importés peuvent être bloqués lorsque la page est ouverte directement avec `file://`.
+> Les modules ES importés depuis des CDN nécessitent un contexte HTTP(S).
 
 ## Contrôles
 - **Espace / Flèche Haut / Clic** : sauter.
 
 ## Caractéristiques
-- Moteur maison 120 fps avec `requestAnimationFrame`.
-- Niveau généré procéduralement (~4 minutes) comprenant piques, blocs, plateformes mouvantes et zones d'accélération.
-- Rebond immédiat au début en cas de collision.
-- Rendu Canvas minimaliste avec parallaxe et traînée du cube.
-- Gestion audio préparée pour ajouter facilement une musique (`game.loadMusic('chemin/vers/musique.mp3')`).
+- Couloir infini en 3D avec caméra dynamique et rendu WebGL fluide (boucle à 120 FPS).
+- Cube joueur physique (gravité + impulsion) avec collisions précises.
+- Obstacles volumétriques variés (piques, blocs, plateformes mouvantes) et sections accélérées.
+- Esthétique néon (parallaxe d'étoiles, éclairages dynamiques, rails lumineux).
+- Gestion audio prête à l'emploi (`game.loadMusic('chemin/vers/musique.mp3')`).
 
 ## Structure
 ```
-index.html          Point d'entrée web
-styles.css          Habillage minimaliste
+index.html          Point d'entrée web et conteneur du rendu WebGL
+styles.css          Habillage minimaliste néon
 src/
-  core/             Boucle de jeu et entrées
-  entities/         Joueur et physique
-  level/            Génération et obstacles
-  render/           Dessin Canvas
   audio/            Gestionnaire audio optionnel
-  game/             Coordination gameplay
+  core/             Boucle de jeu et gestion des entrées
+  entities/         Joueur 3D
+  game/             Orchestration Three.js et caméra
+  level/            Construction du couloir et obstacles
   main.js           Initialisation
 ```

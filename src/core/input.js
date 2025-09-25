@@ -1,9 +1,9 @@
 /**
- * Collects keyboard and pointer input to drive jumps.
+ * Collecte les entrées clavier et pointeur pour déclencher les sauts.
  */
 export class Input {
-  constructor(canvas) {
-    this.canvas = canvas;
+  constructor(element) {
+    this.element = element;
     this.jumpRequested = false;
 
     this.keyHandler = (event) => {
@@ -16,7 +16,7 @@ export class Input {
     };
 
     this.pointerHandler = (event) => {
-      if (event.type === 'mousedown') {
+      if (event.type === 'mousedown' || event.type === 'touchstart') {
         this.jumpRequested = true;
       }
       event.preventDefault();
@@ -24,8 +24,8 @@ export class Input {
 
     window.addEventListener('keydown', this.keyHandler);
     window.addEventListener('keyup', this.keyHandler);
-    canvas.addEventListener('mousedown', this.pointerHandler);
-    canvas.addEventListener('touchstart', this.pointerHandler, { passive: false });
+    element.addEventListener('mousedown', this.pointerHandler);
+    element.addEventListener('touchstart', this.pointerHandler, { passive: false });
   }
 
   consumeJumpRequest() {
@@ -37,7 +37,7 @@ export class Input {
   dispose() {
     window.removeEventListener('keydown', this.keyHandler);
     window.removeEventListener('keyup', this.keyHandler);
-    this.canvas.removeEventListener('mousedown', this.pointerHandler);
-    this.canvas.removeEventListener('touchstart', this.pointerHandler);
+    this.element.removeEventListener('mousedown', this.pointerHandler);
+    this.element.removeEventListener('touchstart', this.pointerHandler);
   }
 }
